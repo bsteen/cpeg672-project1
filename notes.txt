@@ -1,0 +1,20 @@
+Identify ciphers
+Vigenère capital/lower case problem
+Hill might be easiest (system of equations, 4x4 matrix, inverting)
+
+1.txt:
+Squared sum = 0.041424877908646955
+
+2.txt:
+Squared sum = 0.05117392422903547
+has no j's
+
+3.txt:
+Squared sum = 0.06444444444444443
+has no j's
+
+4.txt
+Squared sum = 0.06984356253421706
+
+5.txt
+Squared sum = 0.044946550048590876
