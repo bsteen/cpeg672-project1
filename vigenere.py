@@ -31,7 +31,7 @@ def find_potential_shifts(string, key_len):
         # Calculate how close the shift made the characters to normal English frequency
         best_fits = []
         for k in shift_freqs:
-            if abs(shift_freqs[k] - 0.065) <= 0.017:
+            if abs(shift_freqs[k] - 0.065) <= 0.011:
                 best_fits.append(k)
         keys.append(best_fits)
         # print("Best shifts for position", i, ":", keys[-1])
@@ -75,23 +75,29 @@ def solve_with_keys(string, keys):
         decoded = "".join(decoded)
         sqr_eng_freq = english_check.squared_eng_freq(decoded)
 
-        f, w = english_check.found_common_word(decoded)
-        if f == w :#and abs(sqr_eng_freq - 0.065) <= 0.005:
-            print("Testing permutation:", key)
+        # f, w = english_check.found_common_word(decoded)
+        if abs(sqr_eng_freq - 0.065) <= 0.005:
+            print("Key permutation :", key)
             print("\tSquared Frequency:", sqr_eng_freq)
-            print("\tPrintout of first 48 characters:", decoded[:48])
+            # print("\tFirst 48 characters:", decoded[:48])
+            print("Full printout:", decoded)
+    print()
 
 if __name__ == "__main__":
     string = ""
-    file = open("encrypted/challenge.txt", "r")
+    file = open("encrypted/1.txt", "r")
 
     for line in file:
         string += line.strip().replace(" ", "")
 
-    key_len = 16
-    print("Key length selected:", key_len)
+    # for k in range(16, 17):
+    #     key_len = k
+    #     print("Key length selected:", key_len)
 
-    potential_shifts = find_potential_shifts(string, key_len)
-    keys = find_key_permutations(potential_shifts)
+    #     potential_shifts = find_potential_shifts(string, key_len)
+    #     keys = find_key_permutations(potential_shifts)
 
-    solve_with_keys(string, keys)
+    #     solve_with_keys(string, keys)
+
+    key = [[1, 4, 20, 22, 20, 11, 7, 14, 5, 6, 24, 14, 13, 11, 8, 7]]
+    solve_with_keys(string, key)

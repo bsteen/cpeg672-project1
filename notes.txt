@@ -1,10 +1,12 @@
 Identify ciphers
 Hill might be easiest (system of equations, 4x4 matrix, inverting)
 
-challenge.txt is Vigenere
-
 1.txt:
-Squared sum = 0.041284810797
+Vigenere
+key len = 16
+Key used decode: [1, 4, 20, 22, 20, 11, 7, 14, 5, 6, 24, 14, 13, 11, 8, 7]
+Squared Frequency: 0.06550312154760984
+Full printout: itisintheuncompromisingnesswithwhichdogmaisheldandnotinthedogmaorwantofdogmathatthedangerliesthepowerofdoinganythingwithquicknessisalwaysprizedmuchbythepossessorandoftenwithoutanyattentiontotheimperfectionoftheperformancethelifeofeverymanisadiaryinwhichhemeanstowriteonestoryandwritesanotherandhishumblesthouriswhenhecomparesthevolumeasitiswithwhathevowedtomakeithonestpeopledonthidetheirdeedsitisanoldmaximofminethatwhenyouhaveexcludedtheimpossiblewhateverremainshoweverimprobablemustbethetruthknavesdogrowgreatbybeinggreatmensapesignoranceistheparentoffearcourageisfireandbullyingissmoken
 
 2.txt:
 Squared sum = 0.0510032023322
@@ -19,3 +21,6 @@ Squared sum = 0.0696057973875
 
 5.txt
 Squared sum = 0.0447940597427
+
+
+8, 12, 14, 15, 16
