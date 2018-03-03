@@ -79,7 +79,7 @@ def test_all_keys(keys, vector_string):
     for key in keys:
         text_check, sqr_eng_sum, decoded = test_key(key, vector_string)
         if text_check:
-            output_file.writelines("Tested key:\n"+ str(key) + "\nSquared English sum:" + str(sqr_eng_sum) + "\nDecoded text: " + decoded + "\n\n")
+            output_file.writelines("Tested key:\n"+ str(key) + "\nSquared English Frequency Sum: " + str(sqr_eng_sum) + "\nDecoded text: " + decoded + "\n\n")
         if count % 1000 == 0:
             print("Number of keys tested:", count, "/", len(keys))
         count += 1

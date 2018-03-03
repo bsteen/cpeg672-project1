@@ -78,8 +78,8 @@ def solve_with_keys(string, keys):
         # f, w = english_check.found_common_word(decoded)
         if abs(sqr_eng_freq - 0.065) <= 0.005:
             print("Key permutation :", key)
-            print("\tSquared English Frequency:", sqr_eng_freq)
-            print("\tDecoded:", decoded)
+            print("\tSquared English Frequency Sum:", sqr_eng_freq)
+            print("\tDecoded text:", decoded)
     print()
 
 if __name__ == "__main__":
@@ -89,7 +89,7 @@ if __name__ == "__main__":
     for line in file:
         string += line.strip().replace(" ", "")
 
-    # Search for valid keys in this range of sizes
+    # Search for valid keys in this range of sizes (narrow down by process of elimination)
     for k in range(16, 17):
         key_len = k
         print("Key length selected:", key_len)
@@ -101,5 +101,5 @@ if __name__ == "__main__":
 
     # When you have found the key you know you want to use, comment out the
     # for-loop about and use the two lines below
-    # key = [[1, 4, 20, 22, 20, 11, 7, 14, 5, 6, 24, 14, 13, 11, 8, 7]]
-    # solve_with_keys(string, key)
+    key = [[1, 4, 20, 22, 20, 11, 7, 14, 5, 6, 24, 14, 13, 11, 8, 7]]
+    solve_with_keys(string, key)
