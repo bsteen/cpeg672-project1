@@ -32,3 +32,4 @@ Squared observed sum = 0.04494655004859088
 Squared English sum = 0.03790484195679802
 Probably Hill 2x2 (by process of elimination)
 http://crypto.interactive-maths.com/hill-cipher.html
+I am stupid and did not understand / forgot how python threads actually worked: https://stackoverflow.com/questions/1697571/python-threading-appears-to-run-threads-sequentially/1697670#1697670
