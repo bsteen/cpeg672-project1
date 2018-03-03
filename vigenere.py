@@ -64,7 +64,7 @@ def find_key_permutations(potential_shifts):
 
 # Given a list of keys, try to solve the Vigener cipher with each key
 # Note: the decode key must be the opposite of what was used to encode the message:
-# E.g: Key to encode: 18,10,11,8,26,12,9,9,12,6 => key to decode: 9,17,16,19,1,15,18,18,15,21
+# E.g: Key to encode: 18,10,11,8,26,12,9,9,12,6 => key to decode: 9,17,16,19,1,15,18,18,15,21 (what this function uses)
 def solve_with_keys(string, keys):
     for key in keys:
         decoded = list(string)
@@ -78,9 +78,8 @@ def solve_with_keys(string, keys):
         # f, w = english_check.found_common_word(decoded)
         if abs(sqr_eng_freq - 0.065) <= 0.005:
             print("Key permutation :", key)
-            print("\tSquared Frequency:", sqr_eng_freq)
-            # print("\tFirst 48 characters:", decoded[:48])
-            print("Full printout:", decoded)
+            print("\tSquared English Frequency:", sqr_eng_freq)
+            print("\tDecoded:", decoded)
     print()
 
 if __name__ == "__main__":
@@ -90,14 +89,17 @@ if __name__ == "__main__":
     for line in file:
         string += line.strip().replace(" ", "")
 
-    # for k in range(16, 17):
-    #     key_len = k
-    #     print("Key length selected:", key_len)
+    # Search for valid keys in this range of sizes
+    for k in range(16, 17):
+        key_len = k
+        print("Key length selected:", key_len)
 
-    #     potential_shifts = find_potential_shifts(string, key_len)
-    #     keys = find_key_permutations(potential_shifts)
+        potential_shifts = find_potential_shifts(string, key_len)
+        keys = find_key_permutations(potential_shifts)
 
-    #     solve_with_keys(string, keys)
+        solve_with_keys(string, keys)
 
-    key = [[1, 4, 20, 22, 20, 11, 7, 14, 5, 6, 24, 14, 13, 11, 8, 7]]
-    solve_with_keys(string, key)
+    # When you have found the key you know you want to use, comment out the
+    # for-loop about and use the two lines below
+    # key = [[1, 4, 20, 22, 20, 11, 7, 14, 5, 6, 24, 14, 13, 11, 8, 7]]
+    # solve_with_keys(string, key)

@@ -1,26 +1,36 @@
-Identify ciphers
 Hill might be easiest (system of equations, 4x4 matrix, inverting)
+
+Column transposition:
+8, 9, or 10 columns; k is a permuation of the 8, 9, or 10 columns
 
 1.txt:
 Vigenere
 key len = 16
 Key used decode: [1, 4, 20, 22, 20, 11, 7, 14, 5, 6, 24, 14, 13, 11, 8, 7]
-Squared Frequency: 0.06550312154760984
+Squared English Frequency: 0.06550312154760984
 Full printout: itisintheuncompromisingnesswithwhichdogmaisheldandnotinthedogmaorwantofdogmathatthedangerliesthepowerofdoinganythingwithquicknessisalwaysprizedmuchbythepossessorandoftenwithoutanyattentiontotheimperfectionoftheperformancethelifeofeverymanisadiaryinwhichhemeanstowriteonestoryandwritesanotherandhishumblesthouriswhenhecomparesthevolumeasitiswithwhathevowedtomakeithonestpeopledonthidetheirdeedsitisanoldmaximofminethatwhenyouhaveexcludedtheimpossiblewhateverremainshoweverimprobablemustbethetruthknavesdogrowgreatbybeinggreatmensapesignoranceistheparentoffearcourageisfireandbullyingissmoken
 
 2.txt:
-Squared sum = 0.0510032023322
+Squared observed sum = 0.051173924229035474
+Squared English sum = 0.0439782820612771
 has no j's
+Probably playfair
 
 3.txt:
-Squared sum = 0.0642301654757
+Squared observed sum = 0.06444444444444444
+Squared English sum = 0.0643784115158248
 has no j's
+Probably column transposition cipher
 
 4.txt
-Squared sum = 0.0696057973875
+Squared observed sum = 0.06984356253421704
+Squared English sum = 0.03652875472329036
+Probably substitution cipher
+OBS = [('d', 0.1296928327645051), ('z', 0.1075085324232082), ('v', 0.08703071672354949), ('c', 0.08532423208191127), ('t', 0.07849829351535836), ('f', 0.06655290102389079), ('a', 0.05802047781569966), ('q', 0.05460750853242321), ('g', 0.04436860068259386), ('y', 0.042662116040955635), ('e', 0.032423208191126277), ('p', 0.032423208191126277), ('j', 0.02901023890784983), ('h', 0.025597269624573378), ('s', 0.023890784982935155), ('n', 0.023890784982935155), ('m', 0.020477815699658702), ('b', 0.01877133105802048), ('l', 0.011945392491467578), ('i', 0.010238907849829351), ('o', 0.010238907849829351), ('r', 0.0034129692832764505), ('u', 0.0017064846416382253), ('x', 0.0017064846416382253), ('w', 0.0), ('k', 0.0)]
+ENG = [('e', 0.1288623426065769), ('t', 0.09024664994930598), ('a', 0.08064249900208098), ('o', 0.07378315126621263), ('n', 0.06984975410235668), ('i', 0.06905550211598431), ('s', 0.063817324270356), ('r', 0.06156572691936394), ('h', 0.06098726796371807), ('d', 0.04328667139002636), ('l', 0.04101676132771116), ('u', 0.0278568510204016), ('c', 0.026892340312538593), ('m', 0.02500971934780021), ('f', 0.0244847137116921), ('w', 0.021192261444145363), ('g', 0.019625534749730816), ('y', 0.01806326249861108), ('p', 0.017031440203182008), ('b', 0.015373768624831691), ('v', 0.010257964235274787), ('k', 0.006252182367878119), ('x', 0.0016941732664605912), ('j', 0.0011176940633901926), ('q', 0.0010648594165322703), ('z', 0.0009695838238376564)]
+
 
 5.txt
-Squared sum = 0.0447940597427
-
-
-8, 12, 14, 15, 16
+Squared observed sum = 0.04494655004859088
+Squared English sum = 0.03790484195679802
+Probably Hill 2x2 (by process of elimination)
