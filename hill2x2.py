@@ -1,6 +1,7 @@
 import itertools
 import numpy as np
-import _thread as thread
+import threading
+import time
 import english_check
 
 # Character to number: a=0, ..., z=25
@@ -35,20 +36,20 @@ def tuple_to_2x2(tup):
 
 # Generate all keys matrixes for a 2x2 hill
 # Returns a list of 2x2 matrixes
-# This fucntion takes 7-10 seconds
+# This function takes 7-10 seconds
 def gen_all_key_matrixes():
     print("Generating all key combinations...")
     alphabet = list(range(26))
     # 26×25×24×23 = 358800 possible keys
     key_list = list(itertools.permutations(alphabet, 4))
 
-    print("Done\nConverting all key combinations to matrixes...")
+    print("\tDone\nConverting all key combinations to matrixes...")
     # Convert the list of tuples to a list of matrixes
     key_matrix_list = []
     for lst in key_list:
         key_matrix_list.append(tuple_to_2x2(lst))
 
-    print("Done")
+    print("\tDone")
     return key_matrix_list
 
 # Takes in a key matrix and a string in the form of a list of 2x1 vectors
@@ -56,18 +57,16 @@ def gen_all_key_matrixes():
 def test_key(matrix_key, vector_string):
     decoded = ""
 
-    # Perform the matrix mutiplication and convert the result back to characters
+    # Perform the matrix multiplication and convert the result back to characters
     for vec in vector_string:
         vec_result = (matrix_key * vec) % 26
         decoded += ntc(vec_result[0][0]) + ntc(vec_result[1][0])
 
     # Check if the decoded string in plain text English
     sqr_eng_sum = english_check.squared_eng_freq(decoded)
-    # if abs(sqr_eng_sum - 0.065) < 0.01:
-    print("Tested key:\n", matrix_key)
-    print("Squared English sum:", sqr_eng_sum)
-    print("Decoded text:", decoded, "\n")
-
+    if abs(sqr_eng_sum - 0.065) < 0.005:
+        # Print all at once so when multithreading outputs don't get clobbered
+        print("Tested key:\n"+ str(matrix_key) + "\nSquared English sum:" + str(sqr_eng_sum) + "\nDecoded text:" + decoded[:42] + "\n")
     return
 
 # Given a list of key matrixes and an input string in the form of a list of 2x1
@@ -79,35 +78,41 @@ def test_all_keys(keys, vector_string):
     for key in keys:
         test_key(key, vector_string)
         if count % 1000 == 0:
-            print("Number of keys tested:", count)
+            print("Number of keys tested:", count, "\n")
         count += 1
 
     print("Done testing all keys")
     return
 
-def thread_fuc(key_set, vector_string, start, end, thread_id):
+# Worker function for a thread; Used by test_all_keys_threaded
+def thread_worker(key_set, vector_string, start, end, thread_id):
     print("Thread", thread_id, "starting range:", start, end)
+    time.sleep(0.1) # Wait for other threads to start
 
-    count = 0
     for key in key_set:
         test_key(key, vector_string)
-        count += 1
-        if count % 1000 == 0:
-            print("Thread", thread_id, "is on", count, "of", end - start, "keys")
 
     print("Thread", thread_id, "finished range:", start, end)
     return
 
 # Same as test_all_keys, except does it will multiple threads
 def test_all_keys_threaded(keys, vector_string, num_threads):
-    print("Testing all keys...")
+    print("Testing all keys with", num_threads, "threads...")
     num_keys = len(keys)
+    threads = []
 
     for thread_id in range(num_threads):
         start_idx = (num_keys // num_threads) * thread_id
         end_idx = (num_keys // num_threads) * thread_id + (num_keys // num_threads)
-        thread.start_new_thread(thread_fuc, (keys[start_idx:end_idx], vector_string, start_idx, end_idx, thread_id))
+        new_thread = threading.Thread(target = thread_worker, args = (keys[start_idx:end_idx], vector_string, start_idx, end_idx, thread_id))
+        threads.append(new_thread)
+        new_thread.start()
 
+    # Main program blocks until all threads are finished
+    for thread in threads:
+        thread.join()
+
+    print("Done testing all keys")
     return
 
 if __name__ == "__main__":
@@ -121,7 +126,7 @@ if __name__ == "__main__":
     keys = gen_all_key_matrixes()
     vector_string = string_to_vec(string)
     # test_all_keys(keys, vector_string)
-    test_all_keys_threaded(keys, vector_string, 4)
+    test_all_keys_threaded(keys, vector_string, 7)
 
     # vec_string = string_to_vec("plhzaoplzp")
     # matrix_key = np.matrix([[1,2],[3,4]])
