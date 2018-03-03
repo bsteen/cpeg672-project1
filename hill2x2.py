@@ -1,5 +1,6 @@
 import itertools
 import numpy as np
+import _thread as thread
 import english_check
 
 # Character to number: a=0, ..., z=25
@@ -41,13 +42,13 @@ def gen_all_key_matrixes():
     # 26×25×24×23 = 358800 possible keys
     key_list = list(itertools.permutations(alphabet, 4))
 
-    print("\tDone\nConverting all key combinations to matrixes...")
+    print("Done\nConverting all key combinations to matrixes...")
     # Convert the list of tuples to a list of matrixes
     key_matrix_list = []
     for lst in key_list:
         key_matrix_list.append(tuple_to_2x2(lst))
 
-    print("\tDone")
+    print("Done")
     return key_matrix_list
 
 # Takes in a key matrix and a string in the form of a list of 2x1 vectors
@@ -62,10 +63,10 @@ def test_key(matrix_key, vector_string):
 
     # Check if the decoded string in plain text English
     sqr_eng_sum = english_check.squared_eng_freq(decoded)
-    if abs(sqr_eng_sum - 0.065) < 0.005:
-        print("Tested key:\n", matrix_key)
-        print("Squared English sum:", sqr_eng_sum)
-        print("Decoded text:", decoded)
+    # if abs(sqr_eng_sum - 0.065) < 0.01:
+    print("Tested key:\n", matrix_key)
+    print("Squared English sum:", sqr_eng_sum)
+    print("Decoded text:", decoded, "\n")
 
     return
 
@@ -84,6 +85,30 @@ def test_all_keys(keys, vector_string):
     print("Done testing all keys")
     return
 
+def thread_fuc(key_set, vector_string, start, end, thread_id):
+    print("Thread", thread_id, "starting range:", start, end)
+
+    count = 0
+    for key in key_set:
+        test_key(key, vector_string)
+        count += 1
+        if count % 1000 == 0:
+            print("Thread", thread_id, "is on", count, "of", end - start, "keys")
+
+    print("Thread", thread_id, "finished range:", start, end)
+    return
+
+# Same as test_all_keys, except does it will multiple threads
+def test_all_keys_threaded(keys, vector_string, num_threads):
+    print("Testing all keys...")
+    num_keys = len(keys)
+
+    for thread_id in range(num_threads):
+        start_idx = (num_keys // num_threads) * thread_id
+        end_idx = (num_keys // num_threads) * thread_id + (num_keys // num_threads)
+        thread.start_new_thread(thread_fuc, (keys[start_idx:end_idx], vector_string, start_idx, end_idx, thread_id))
+
+    return
 
 if __name__ == "__main__":
     string = ""
@@ -95,4 +120,9 @@ if __name__ == "__main__":
 
     keys = gen_all_key_matrixes()
     vector_string = string_to_vec(string)
-    test_all_keys(keys, vector_string)
+    # test_all_keys(keys, vector_string)
+    test_all_keys_threaded(keys, vector_string, 4)
+
+    # vec_string = string_to_vec("plhzaoplzp")
+    # matrix_key = np.matrix([[1,2],[3,4]])
+    # test_key(matrix_key, vec_string)
