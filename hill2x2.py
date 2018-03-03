@@ -54,7 +54,7 @@ def gen_all_key_matrixes():
 
 # Takes in a key matrix and a string in the form of a list of 2x1 vectors
 # Decoded the string and tests to see if could be valid English
-def test_key(matrix_key, vector_string, thread_id):
+def test_key(matrix_key, vector_string):
     decoded = ""
 
     # Perform the matrix multiplication and convert the result back to characters
@@ -74,11 +74,10 @@ def test_key(matrix_key, vector_string, thread_id):
 def test_all_keys(keys, vector_string):
     print("Testing all", len(keys), "keys...")
     output_file = open("output/hill2x2.txt", "w")
-
     count = 1
 
     for key in keys:
-        text_check, sqr_eng_sum, decoded = test_key(key, vector_string, 0)
+        text_check, sqr_eng_sum, decoded = test_key(key, vector_string)
         if text_check:
             output_file.writelines("Tested key:\n"+ str(key) + "\nSquared English sum:" + str(sqr_eng_sum) + "\nDecoded text: " + decoded + "\n\n")
         if count % 1000 == 0:
@@ -138,10 +137,12 @@ if __name__ == "__main__":
     for line in file:
         string += line.strip().replace(" ", "")
 
-    keys = gen_all_key_matrixes()
-    vector_string = string_to_vec(string)
-    test_all_keys(keys, vector_string)
+    # Run this to get all relatively possible
+    # keys = gen_all_key_matrixes()
+    # vector_string = string_to_vec(string)
+    # test_all_keys(keys, vector_string)
 
-    # vec_string = string_to_vec("plhzaoplzp")
-    # matrix_key = np.matrix([[1,2],[3,4]])
-    # test_key(matrix_key, vec_string)
+    # Run this when you know the correct key
+    vec_string = string_to_vec(string)
+    matrix_key = np.matrix([[15,13],[9,24]])
+    print(test_key(matrix_key, vec_string)[2])

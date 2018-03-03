@@ -1,6 +1,3 @@
-Column transposition:
-8, 9, or 10 columns; k is a permutation of the 8, 9, or 10 columns
-
 1.txt:
 Vigenere
 key len = 16
@@ -19,6 +16,7 @@ Squared observed sum = 0.06444444444444444
 Squared English sum = 0.0643784115158248
 has no j's
 Probably column transposition cipher
+8, 9, or 10 columns; k is a permutation of the 8, 9, or 10 columns
 
 4.txt
 Squared observed sum = 0.06984356253421704
@@ -30,6 +28,12 @@ ENG = [('e', 0.1288623426065769), ('t', 0.09024664994930598), ('a', 0.0806424990
 5.txt
 Squared observed sum = 0.04494655004859088
 Squared English sum = 0.03790484195679802
-Probably Hill 2x2 (by process of elimination)
+Hill 2x2 (by process of elimination)
 http://crypto.interactive-maths.com/hill-cipher.html
 I am stupid and did not understand / forgot how python threads actually worked: https://stackoverflow.com/questions/1697571/python-threading-appears-to-run-threads-sequentially/1697670#1697670
+42m37.884s to brute force all 358800 keys
+Tested key:
+[[15 13]
+ [ 9 24]]
+Squared English sum:0.06564966208695858
+Decoded text: fairspeechmayhideafoulheartscatteredwitstakealongtimepickingupwhenyouvelearnedtolaughatthethingsthatshouldbelaughedatandnottolaughatthosethatshouldntyouvegotwisdomandunderstandingtrulytoenjoybodilywarmthsomesmallpartofyoumustbecoldforthereisnoqualityinthisworldthatisnotwhatitismerelybycontrastnothingexistsinitselftobevestedwithenormousauthorityisafinethingbuttohavetheonlookingworldconsenttoitisafinerblunttoolsaresometimesfoundofusewheresharperinstrumentswouldfailinheritedideasareacuriousthingandinterestingtoobserveandexaminehappyaretheythatheartheirdetractionsandcanputthemtomending

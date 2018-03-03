@@ -15,22 +15,7 @@ def substitute(string, substitutions):
                 new_string[letter] = chr(substitutions[i] + 97)
     return "".join(new_string)
 
-# VERY stupid bogo brute force (does not guarantee every substitution combo will be tested...)
-# def brute_force(string):
-#     print("Starting brute force...")
-#     subs = list(range(26))
-#     for i in range(2**22):
-#         if(i % 10000 == 0 and i != 0):
-#             print("Combinations tried: ", i, " (", 100*i / float(10**26), "%)", sep="")
-#         random.shuffle(subs)
-#         new_string = substitute(string, subs)
-#         sqr_freq = english_check.squared_eng_freq(new_string)
 
-#         if abs(sqr_freq - 0.065) < 0.005:
-#             print("squared_eng_freq:", sqr_freq)
-#             print(subs)
-#             print(new_string[:42], "\n")
-#     print("Done brute force")
 
 if __name__ == "__main__":
     string = ""
