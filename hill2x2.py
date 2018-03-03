@@ -88,7 +88,8 @@ def test_key(matrix_key, vector_string, thread_id):
 def thread_worker(key_set, vector_string, start, end, thread_id):
     print("Starting thread:", thread_id, "Range:", start, end - 1)
     output_file = open("output/out_" + str(thread_id), "w")
-    output_file.write("Thread: " + str(thread_id) + "\nRange: " + str(start) + " " + str(end - 1) + "\n\n")
+    output_file.writelines("Thread: " + str(thread_id) + "\nRange: " + str(start) + " " + str(end - 1) + "\n\n")
+    time.sleep(0.2)
 
     count = 0
     for key in key_set:
@@ -134,7 +135,7 @@ if __name__ == "__main__":
 
     keys = gen_all_key_matrixes()
     vector_string = string_to_vec(string)
-    test_all_keys_threaded(keys, vector_string, 1)     # Multithread brute force
+    test_all_keys_threaded(keys, vector_string, 12)     # Multithread brute force
 
     # vec_string = string_to_vec("plhzaoplzp")
     # matrix_key = np.matrix([[1,2],[3,4]])
