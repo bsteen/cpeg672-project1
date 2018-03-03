@@ -64,7 +64,7 @@ def test_key(matrix_key, vector_string, thread_id):
 
     # Check if the decoded string in plain text English
     sqr_eng_sum = english_check.squared_eng_freq(decoded)
-    if abs(sqr_eng_sum - 0.065) < 0.004:
+    if abs(sqr_eng_sum - 0.065) < 0.005:
         return True, sqr_eng_sum, decoded
     else:
         return False, sqr_eng_sum, decoded
@@ -86,10 +86,9 @@ def test_key(matrix_key, vector_string, thread_id):
 
 # Worker function for a thread; Used by test_all_keys_threaded
 def thread_worker(key_set, vector_string, start, end, thread_id):
-    print("Thread:", thread_id, "Range:", start, end - 1)
+    print("Starting thread:", thread_id, "Range:", start, end - 1)
     output_file = open("output/out_" + str(thread_id), "w")
     output_file.write("Thread: " + str(thread_id) + "\nRange: " + str(start) + " " + str(end - 1) + "\n\n")
-    time.sleep(0.2) # Wait for other threads to start
 
     count = 0
     for key in key_set:
@@ -98,7 +97,7 @@ def thread_worker(key_set, vector_string, start, end, thread_id):
             output_file.writelines("Tested key:\n"+ str(key) + "\nSquared English sum:" + str(sqr_eng_sum) + "\nDecoded text: " + decoded[:42] + "\n\n")
 
         count += 1
-        if count % 1500 == 0:
+        if count % 1000 == 0:
             print("Thread " + str(thread_id) + " at " + str(count) + " of " + str(end - start))
 
     output_file.close()
@@ -118,7 +117,7 @@ def test_all_keys_threaded(keys, vector_string, num_threads):
         threads.append(new_thread)
         new_thread.start()
 
-    # Main program blocks until all threads are finished
+    # Main thread blocks until all threads are finished
     for thread in threads:
         thread.join()
 
@@ -135,8 +134,7 @@ if __name__ == "__main__":
 
     keys = gen_all_key_matrixes()
     vector_string = string_to_vec(string)
-    # test_all_keys(keys, vector_string)    # Single thread brute force
-    test_all_keys_threaded(keys, vector_string, 24)     # Multithread brute force
+    test_all_keys_threaded(keys, vector_string, 1)     # Multithread brute force
 
     # vec_string = string_to_vec("plhzaoplzp")
     # matrix_key = np.matrix([[1,2],[3,4]])
