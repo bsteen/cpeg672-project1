@@ -29,7 +29,7 @@ def calc_bigram_freq(string):
     return sort_dictionary(obs_freq)[:20]
 
 # Calculates the frequency of the trigrams
-# Returns results as a list of the top 10, from high to low frequency
+# Returns results as a list of the top results, from high to low frequency
 def calc_trigram_freq(string):
     obs_freq = {}
     total_trigrams = len(string) - 2
@@ -40,7 +40,18 @@ def calc_trigram_freq(string):
     for key in obs_freq:
         obs_freq[key] = obs_freq[key] / float(total_trigrams)
 
-    return sort_dictionary(obs_freq)[:10]
+    return sort_dictionary(obs_freq)[:20]
+
+# Out of all 2 letter pairs, count number of repeated letters
+def duplicate_letter_count(string):
+    obs_freq = {}
+    letter_pairs = len(string) - 1
+
+    for i in range(26):
+        letter = chr(i + ord('a'))
+        obs_freq[letter] = string.count(letter+letter)
+
+    return sort_dictionary(obs_freq)
 
 # Calculates the frequency of each letter in a string and then multiplies each frequency by itself
 # A plain English sentence should result in a value around 0.065
