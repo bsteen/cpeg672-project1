@@ -5,7 +5,7 @@ import operator
 def sort_dictionary(dic):
     return sorted(dic.items(), key=operator.itemgetter(1), reverse=True)
 
-# Helper fucntin used by squared_obs_freq and squared_eng_freq
+# Helper function used by squared_obs_freq and squared_eng_freq
 # Calculates the frequency of each letter in a string
 # Returns a dictionary with a letter/percent pair
 def calc_observed_freq(string):
@@ -14,17 +14,33 @@ def calc_observed_freq(string):
         freq[key] = string.count(key) / float(len(string))
     return freq
 
-# Calculates the frequency of the top 20 bigrams in the English language
-# Returns results as dictionary
-# Source https://www3.nd.edu/~busiforc/handouts/cryptography/Letter%20Frequencies.html#bigrams
+# Calculates the frequency of the bigrams
+# Returns results as a list of the top 20, from high to low frequency
 def calc_bigram_freq(string):
-    obs_freq ={"th":0.0, "he":0.0, "in":0.0, "er":0.0, "an":0.0, "re":0.0, "nd":0.0, "on":0.0, "en":0.0, "at":0.0, "ou":0.0, "ed":0.0, "ha":0.0, "to":0.0, "or":0.0, "it":0.0, "is":0.0, "hi":0.0, "es":0.0, "ng":0.0}
-    eng_freq ={"th":0.03882543, "he":0.03681391, "in":0.02283899, "er":0.02178042, "an":0.02140460, "re":0.01749394, "nd":0.01571977, "on":0.01418244, "en":0.01383239, "at":0.01335523, "ou":0.01285484, "ed":0.01275779, "ha":0.01274742, "to":0.01169655, "or":0.01151094, "it":0.01134891, "is":0.01109877, "hi":0.01092302, "es":0.01092301, "ng":0.01053385}
-
+    obs_freq = {}
     total_bigrams = len(string) - 1
+
+    for i in range(0, total_bigrams):
+        bigram = string[i:i+2]
+        obs_freq[bigram] = string.count(bigram)
     for key in obs_freq:
-        obs_freq[key] = string.count(key) / float(total_bigrams)
-    return obs_freq
+        obs_freq[key] = obs_freq[key] / float(total_bigrams)
+
+    return sort_dictionary(obs_freq)[:20]
+
+# Calculates the frequency of the trigrams
+# Returns results as a list of the top 10, from high to low frequency
+def calc_trigram_freq(string):
+    obs_freq = {}
+    total_trigrams = len(string) - 2
+
+    for i in range(0, total_trigrams):
+        trigram = string[i:i+3]
+        obs_freq[trigram] = string.count(trigram)
+    for key in obs_freq:
+        obs_freq[key] = obs_freq[key] / float(total_trigrams)
+
+    return sort_dictionary(obs_freq)[:10]
 
 # Calculates the frequency of each letter in a string and then multiplies each frequency by itself
 # A plain English sentence should result in a value around 0.065
@@ -50,7 +66,7 @@ def squared_eng_freq(string):
 # Returns the amount of words it found, along with the words it looked for
 def found_common_word(string):
     common_words = ["the", "and", "that", "have", "for", "not", "with", "this"]
-    found = 0;
+    found = 0
     for word in common_words:
         if string.find(word) != -1:
             found += 1
