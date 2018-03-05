@@ -71,22 +71,22 @@ def test_key(matrix_key, vector_string):
 
 # Given a list of key matrixes and an input string in the form of a list of 2x1
 # vectors, test all the keys on the input string
-def test_all_keys(keys, vector_string):
-    print("Testing all", len(keys), "keys...")
-    output_file = open("output/hill2x2.txt", "w")
-    count = 1
+# def test_all_keys(keys, vector_string):
+#     print("Testing all", len(keys), "keys...")
+#     output_file = open("output/hill2x2_singleproc", "w")
+#     count = 1
 
-    for key in keys:
-        text_check, sqr_eng_sum, decoded = test_key(key, vector_string)
-        if text_check:
-            output_file.writelines("Tested key:\n"+ str(key) + "\nSquared English Frequency Sum: " + str(sqr_eng_sum) + "\nDecoded text: " + decoded + "\n\n")
-        if count % 1000 == 0:
-            print("Number of keys tested:", count, "/", len(keys))
-        count += 1
+#     for key in keys:
+#         text_check, sqr_eng_sum, decoded = test_key(key, vector_string)
+#         if text_check:
+#             output_file.writelines("Tested key:\n"+ str(key) + "\nSquared English Frequency Sum: " + str(sqr_eng_sum) + "\nDecoded text: " + decoded + "\n\n")
+#         if count % 1000 == 0:
+#             print("Number of keys tested:", count, "/", len(keys))
+#         count += 1
 
-    output_file.close()
-    print("Done testing all keys")
-    return
+#     output_file.close()
+#     print("Done testing all keys\n")
+#     return
 
 # Worker function for a process; Used by test_all_keys_parallel
 def proc_worker(key_set, vector_string, start, end, pid):
@@ -102,7 +102,7 @@ def proc_worker(key_set, vector_string, start, end, pid):
 
         count += 1
         if count % 1000 == 0:
-            print("Thread " + str(pid) + " number of keys tested: " + str(count) + "/" + str(len(key_set)))
+            print("Process " + str(pid) + " keys tested: " + str(count) + "/" + str(len(key_set)))
 
     output_file.close()
     print("Process " + str(pid) + " finished range: " + str(start) + " " + str(end))
@@ -125,7 +125,7 @@ def test_all_keys_parallel(keys, vector_string, num_procs):
     for pid in processes:
         pid.join()
 
-    print("Done testing all keys")
+    print("Done testing all keys\n")
     return
 
 if __name__ == "__main__":
@@ -144,9 +144,11 @@ if __name__ == "__main__":
     # test_all_keys(keys, vector_string)              # With single process
     test_all_keys_parallel(keys, vector_string, 4)  # With multiple processes
 
-    # Now look through output files and find the key that worked...
+    # Now look through the output files and find the key that worked... (found in hill2x2_14 when using 24 processes)
     # Run these when you know the correct key
     vec_string = string_to_vec(string)
     matrix_key = np.matrix([[15,13],[9,24]])    # Correct key goes here
-    print("Key used to decode message: \n", matrix_key)
-    print("Decoded message:", test_key(matrix_key, vec_string)[2])
+    print("Tested key:\n", matrix_key)
+    decoded = test_key(matrix_key, vec_string)[2]
+    print("Squared English Frequency Sum:", english_check.squared_eng_freq(decoded))
+    print("Decoded text: ", decoded, sep='')
