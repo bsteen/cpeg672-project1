@@ -78,7 +78,7 @@ def solve_with_keys(string, keys):
         # f, w = english_check.found_common_word(decoded)
         if abs(sqr_eng_freq - 0.065) <= 0.005:
             print("Key permutation :", key)
-            print("\tSquared English Frequency Sum:", sqr_eng_freq)
+            print("\tEnglish Frequency Sums Squared:", sqr_eng_freq)
             print("\tDecoded text:", decoded)
     print()
 

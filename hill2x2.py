@@ -36,14 +36,13 @@ def tuple_to_2x2(tup):
 
 # Generate all keys matrixes for a 2x2 hill
 # Returns a list of 2x2 matrixes
-# This function takes 7-10 seconds
+# This function takes a few seconds...
 def gen_all_key_matrixes():
-    print("Generating all key combinations...")
+    print("Generating all key combination tuples...")
     alphabet = list(range(26))
-    # 26×25×24×23 = 358800 possible keys
-    key_list = list(itertools.permutations(alphabet, 4))
+    key_list = list(itertools.permutations(alphabet, 4))    # 26×25×24×23 = 358800 possible keys
 
-    print("\tDone\nConverting all key combinations to matrixes...")
+    print("\tDone\nConverting all key combination tuples to matrixes...")
     # Convert the list of tuples to a list of matrixes
     key_matrix_list = []
     for lst in key_list:
@@ -79,7 +78,7 @@ def test_key(matrix_key, vector_string):
 #     for key in keys:
 #         text_check, sqr_eng_sum, decoded = test_key(key, vector_string)
 #         if text_check:
-#             output_file.writelines("Tested key:\n"+ str(key) + "\nSquared English Frequency Sum: " + str(sqr_eng_sum) + "\nDecoded text: " + decoded + "\n\n")
+#             output_file.writelines("Tested key:\n"+ str(key) + "\nEnglish Frequency Sums Squared: " + str(sqr_eng_sum) + "\nDecoded text: " + decoded + "\n\n")
 #         if count % 1000 == 0:
 #             print("Number of keys tested:", count, "/", len(keys))
 #         count += 1
@@ -98,7 +97,7 @@ def proc_worker(key_set, vector_string, start, end, pid):
     for key in key_set:
         text_check, sqr_eng_sum, decoded = test_key(key, vector_string)
         if text_check:
-            output_file.writelines("Tested key:\n"+ str(key) + "\nSquared English Frequency Sum: " + str(sqr_eng_sum) + "\nDecoded text: " + decoded + "\n\n")
+            output_file.writelines("Tested key:\n"+ str(key) + "\nEnglish Frequency Sums Squared: " + str(sqr_eng_sum) + "\nDecoded text: " + decoded + "\n\n")
 
         count += 1
         if count % 1000 == 0:
@@ -150,5 +149,5 @@ if __name__ == "__main__":
     matrix_key = np.matrix([[15,13],[9,24]])    # Correct key goes here
     print("Tested key:\n", matrix_key)
     decoded = test_key(matrix_key, vec_string)[2]
-    print("Squared English Frequency Sum:", english_check.squared_eng_freq(decoded))
+    print("English Frequency Sums Squared:", english_check.squared_eng_freq(decoded))
     print("Decoded text: ", decoded, sep='')

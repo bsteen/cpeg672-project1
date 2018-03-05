@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
     # Compare observed frequencies with actual letter frequencies
     obs_letter_freq = english_check.sort_dictionary(english_check.calc_observed_freq(string))
-    print("Letter frequencies:\n", obs_letter_freq, "\n")
+    print("Observed letter frequencies:\n", obs_letter_freq, "\n")
 
     obs_bigram_freq = english_check.calc_bigram_freq(string)
     print("Bigram frequencies:\n", obs_bigram_freq, "\n")
