@@ -93,7 +93,6 @@ def proc_worker(key_set, vector_string, start, end, pid):
     print("Starting process " +  str(pid) + "; Range: " + str(start) + " " +  str(end - 1))
     output_file = open("output/hill2x2_" + str(pid), "w")
     output_file.writelines("Process: " + str(pid) + "\nRange: " + str(start) + " " + str(end - 1) + "\n\n")
-    time.sleep(0.2) # Wait a little for all processes to start
 
     count = 0
     for key in key_set:
@@ -103,7 +102,7 @@ def proc_worker(key_set, vector_string, start, end, pid):
 
         count += 1
         if count % 1000 == 0:
-            print("Thread " + str(pid) + " number of keys tested:" + str(count) + "/" + str(len(key_set)))
+            print("Thread " + str(pid) + " number of keys tested: " + str(count) + "/" + str(len(key_set)))
 
     output_file.close()
     print("Process " + str(pid) + " finished range: " + str(start) + " " + str(end))
