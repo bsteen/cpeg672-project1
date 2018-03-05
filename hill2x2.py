@@ -1,7 +1,7 @@
 import itertools
 import numpy as np
-# import threading
-# import time
+import time
+import multiprocessing
 import english_check
 
 # Character to number: a=0, ..., z=25
@@ -64,7 +64,7 @@ def test_key(matrix_key, vector_string):
 
     # Check if the decoded string in plain text English
     sqr_eng_sum = english_check.squared_eng_freq(decoded)
-    if abs(sqr_eng_sum - 0.065) < 0.005:
+    if abs(sqr_eng_sum - 0.065) < 0.004:
         return True, sqr_eng_sum, decoded
     else:
         return False, sqr_eng_sum, decoded
@@ -88,61 +88,66 @@ def test_all_keys(keys, vector_string):
     print("Done testing all keys")
     return
 
-# Worker function for a thread; Used by test_all_keys_threaded
-# def thread_worker(key_set, vector_string, start, end, thread_id):
-#     print("Starting thread:", thread_id, "Range:", start, end - 1)
-#     output_file = open("output/out_" + str(thread_id), "w")
-#     output_file.writelines("Thread: " + str(thread_id) + "\nRange: " + str(start) + " " + str(end - 1) + "\n\n")
-#     time.sleep(0.2)
+# Worker function for a process; Used by test_all_keys_parallel
+def proc_worker(key_set, vector_string, start, end, pid):
+    print("Starting process " +  str(pid) + "; Range: " + str(start) + " " +  str(end - 1))
+    output_file = open("output/hill2x2_" + str(pid), "w")
+    output_file.writelines("Process: " + str(pid) + "\nRange: " + str(start) + " " + str(end - 1) + "\n\n")
+    time.sleep(0.2) # Wait a little for all processes to start
 
-#     count = 0
-#     for key in key_set:
-#         text_check, sqr_eng_sum, decoded = test_key(key, vector_string, thread_id)
-#         if text_check:
-#             output_file.writelines("Tested key:\n"+ str(key) + "\nSquared English sum:" + str(sqr_eng_sum) + "\nDecoded text: " + decoded[:42] + "\n\n")
+    count = 0
+    for key in key_set:
+        text_check, sqr_eng_sum, decoded = test_key(key, vector_string)
+        if text_check:
+            output_file.writelines("Tested key:\n"+ str(key) + "\nSquared English Frequency Sum: " + str(sqr_eng_sum) + "\nDecoded text: " + decoded + "\n\n")
 
-#         count += 1
-#         if count % 1000 == 0:
-#             print("Thread " + str(thread_id) + " at " + str(count) + " of " + str(end - start))
+        count += 1
+        if count % 1000 == 0:
+            print("Thread " + str(pid) + " number of keys tested:" + str(count) + "/" + str(len(key_set)))
 
-#     output_file.close()
-#     print("Thread", thread_id, "finished range:", start, end)
-#     return
+    output_file.close()
+    print("Process " + str(pid) + " finished range: " + str(start) + " " + str(end))
+    return
 
-# Same as test_all_keys, except does it will multiple threads
-# def test_all_keys_threaded(keys, vector_string, num_threads):
-#     print("Testing all keys with", num_threads, "threads...")
-#     num_keys = len(keys)
-#     threads = []
+# Same as test_all_keys, except does it in parallel with multiple processes
+def test_all_keys_parallel(keys, vector_string, num_procs):
+    num_keys = len(keys)
+    processes = []
+    print("Testing all", num_keys, "keys with", num_procs, "processes...")
 
-#     for thread_id in range(num_threads):
-#         start_idx = (num_keys // num_threads) * thread_id
-#         end_idx = (num_keys // num_threads) * thread_id + (num_keys // num_threads)
-#         new_thread = threading.Thread(target = thread_worker, args = (keys[start_idx:end_idx], vector_string, start_idx, end_idx, thread_id))
-#         threads.append(new_thread)
-#         new_thread.start()
+    for pid in range(num_procs):
+        start_idx = (num_keys // num_procs) * pid
+        end_idx = (num_keys // num_procs) * pid + (num_keys // num_procs)
+        new_proc = multiprocessing.Process(target = proc_worker, args = (keys[start_idx:end_idx], vector_string, start_idx, end_idx, pid))
+        processes.append(new_proc)
+        new_proc.start()
 
-#     # Main thread blocks until all threads are finished
-#     for thread in threads:
-#         thread.join()
+    # Main process blocks until all processes are finished
+    for pid in processes:
+        pid.join()
 
-#     print("Done testing all keys")
-#     return
+    print("Done testing all keys")
+    return
 
 if __name__ == "__main__":
     string = ""
-    file = open("encrypted/5.txt", "r")
-    # 5.txt has 588 characters
+    file = open("encrypted/5.txt", "r") # 5.txt has 588 characters
 
     for line in file:
         string += line.strip().replace(" ", "")
+    string = string.lower()
 
-    # Run this to get all relatively possible
-    # keys = gen_all_key_matrixes()
-    # vector_string = string_to_vec(string)
-    # test_all_keys(keys, vector_string)
+    multiprocessing.set_start_method('spawn')
 
-    # Run this when you know the correct key
+    # Run these to get find all relatively possible keys
+    keys = gen_all_key_matrixes()                   # Generate all permutations of a 2x2 key
+    vector_string = string_to_vec(string)           # Convert the string into sets of 2x1 vectors
+    # test_all_keys(keys, vector_string)              # With single process
+    test_all_keys_parallel(keys, vector_string, 4)  # With multiple processes
+
+    # Now look through output files and find the key that worked...
+    # Run these when you know the correct key
     vec_string = string_to_vec(string)
-    matrix_key = np.matrix([[15,13],[9,24]])
-    print(test_key(matrix_key, vec_string)[2])
+    matrix_key = np.matrix([[15,13],[9,24]])    # Correct key goes here
+    print("Key used to decode message: \n", matrix_key)
+    print("Decoded message:", test_key(matrix_key, vec_string)[2])

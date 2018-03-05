@@ -40,7 +40,7 @@ Squared English sum = 0.03790484195679802
 Hill 2x2 (by process of elimination)
 http://crypto.interactive-maths.com/hill-cipher.html
 I am stupid and did not understand / forgot how python threads actually worked: https://stackoverflow.com/questions/1697571/python-threading-appears-to-run-threads-sequentially/1697670#1697670
-42m37.884s to brute force all 358800 keys
+42m37.884s to brute force all 358800 keys with a single process
 Tested key:
 [[15 13]
  [ 9 24]]
