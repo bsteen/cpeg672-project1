@@ -121,8 +121,8 @@ def test_all_keys_parallel(keys, vector_string, num_procs):
         new_proc.start()
 
     # Main process blocks until all processes are finished
-    for pid in processes:
-        pid.join()
+    for proc in processes:
+        proc.join()
 
     print("Done testing all keys\n")
     return

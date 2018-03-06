@@ -1,4 +1,5 @@
 import itertools
+import multiprocessing
 import english_check
 
 # Creates a list of tuples containing all possible permutations of column positions
@@ -55,12 +56,39 @@ def generate_string(string, k, column_lengths, new_positions):
 def test_permutations(string, k, column_lengths, column_positions):
     for permutation in column_positions:
         new_string = generate_string(string, k, column_lengths, permutation)
-        # Test string
+
+        # Find the most common trigrams
+        trigram_freq = english_check.calc_trigram_freq(new_string)
+
+        # Get the top trigrams; don't need their frequencies
+        trigrams_only = []
+        for i in range(10):
+            trigrams_only.append(trigram_freq[i][0])
+
+        # If "the" and "and" appear in the top trigrams, print the results
+        if "the" in trigrams_only and "and" in trigrams_only:
+            print(str(permutation) + " " + new_string)
 
 # Launches the specified amount of process with equal workload to break the column transposition cipher
-def start_brute_force(string, k, column_lengths, column_positions, num_processes):
-    test_permutations(string, k, column_lengths, column_positions)
-    return
+def start_brute_force(string, k, column_lengths, column_positions, num_procs):
+    processes = []
+    num_permutations = len(column_positions)
+    print("Total number of permutations to test:", num_permutations, "")
+
+    for pid in range(num_procs):
+        start_idx = (num_permutations // num_procs) * pid
+        end_idx = (num_permutations // num_procs) * pid + (num_permutations // num_procs)
+
+        new_proc = multiprocessing.Process(target = test_permutations, args = (string, k, column_lengths, column_positions[start_idx:end_idx]))
+        processes.append(new_proc)
+
+        print("Starting process", pid, "for range:", start_idx, end_idx - 1)
+        new_proc.start()
+
+    # Wait for all processes to finish
+    for proc in processes:
+        proc.join()
+    print("All permutations processed")
 
 if __name__ == "__main__":
     input_string = ""
@@ -72,7 +100,8 @@ if __name__ == "__main__":
 
     # k is the number of columns
     # k can be 8, 9, or 10 for this problem
-    k = 8
+    k = 9
+    print("k =", k)
 
     column_lengths = calc_col_lens(input_string, k)
     column_positions = generate_column_permutations(k)
