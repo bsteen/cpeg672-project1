@@ -74,29 +74,44 @@ def swap_letters(l0r, l0c, l1r, l1c, board):
     board[l1r][l1c] = temp
     return board
 
+# Tries a random board to decode the text with;
+# If the decoded text is "better" than the previous best, the random changes to the board are kept
 def shotgun_hill_climb(cipher_text, board):
-    sqr_eng_freq = english_check.squared_eng_freq(cipher_text)
-    best_error = abs(sqr_eng_freq - 0.065)
+
+    # Baseline values
     best_board = board
     best_decode = decode_with_board(cipher_text, best_board)
+    sqr_eng_freq = english_check.squared_eng_freq(best_decode)
+    best_error = abs(sqr_eng_freq - 0.065)
     count = 0
 
-    while best_error > 0.001 and count < 200000:
+    print("Showing start info...")
+    print_board(board)
+    print("Starting error rate:", best_error, "\nStarting shotgun hill climb...\n")
+
+    while best_error > 0.001 and count < 1000000:
         coords = []
         decoded_text = ""
 
+        # Get two random coordinates of letters to swap places
         for n in range(4):
             coords.append(random.randint(0, 4))
 
+        # Swap the letters, decode the text, and calculate the error
         board = swap_letters(coords[0], coords[1], coords[2], coords[3], board)
         decoded_text = decode_with_board(cipher_text, board)
         sqr_eng_freq = english_check.squared_eng_freq(decoded_text)
 
+        # If the error rate is better than the previous best, record the changes
         if abs(sqr_eng_freq - 0.065) < best_error:
             best_error = abs(sqr_eng_freq - 0.065)
             best_board = board
             best_decode = decoded_text
+            print("New best board found:")
+            print_board(board)
+            print("Best error so far:", best_error, "\n")
         else:
+            # If the changes are not better, undo them
             board = swap_letters(coords[0], coords[1], coords[2], coords[3], board)
 
         count += 1
@@ -119,6 +134,5 @@ if __name__ == "__main__":
     # obs_bigram_freq = english_check.calc_bigram_freq(string)
     # print("Bigram frequencies:\n", obs_bigram_freq, "\n")
 
-    board = generate_board("abcdefghiklmnopqrstuvwxyz")
-    print_board(board)
+    board = generate_board("dtkuesnpfcwgzhrlaimoybqxv")     # Starting board
     shotgun_hill_climb(cipher_text, board)

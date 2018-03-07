@@ -10,6 +10,13 @@ Observed Frequency Sums Squared = 0.051173924229035474
 English Frequency Sums Squared = 0.0439782820612771
 has no j's
 Playfair since it has no j's and and the observed vs english squared sums are not equal
+After running the shotgun hill climb function for several hours the best board found was:
+dtkue
+snpfc
+wgzhr
+laimo
+ybqxv
+It decodes the cipher text into text with a squared English frequency sum error of: 0.0027312374492883887
 
 3.txt:
 Observed Frequency Sums Squared = 0.06444444444444444
