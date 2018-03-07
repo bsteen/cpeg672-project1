@@ -2,12 +2,6 @@ import itertools
 import multiprocessing
 import english_check
 
-# Creates a list of tuples containing all possible permutations of column positions
-def generate_column_permutations(k):
-    indexes = range(k)
-    # Number of permutations is k!
-    return list(itertools.permutations(indexes, k))
-
 # Calculate the total number of rows in the key
 # i.e. the max length of a column; length of string ceiling dividend by the number of columns
 def calc_num_rows(string, k):
@@ -16,15 +10,26 @@ def calc_num_rows(string, k):
 # Calculates the length of each column
 # Returns lengths as list
 def calc_col_lens(string, k):
-    column_lengths = []
+    # All columns will be at least this long
+    column_lengths = [calc_num_rows(string, k) - 1] * k
 
-    for c in range(k):
-        col_len = calc_num_rows(string, k) - 1  # All columns with be at least this long
-        if len(string) % k - c > 0:             # Calculates if a column has a letter in the last row
-            col_len += 1
-        column_lengths.append(col_len)
+    # Determine how many characters are in the last row
+    # (Does a column have a letter in the last row?)
+    last_row_length = len(string) % k
+    if last_row_length == 0:
+        last_row_length = k
+
+    # Add one more to each column's length as needed
+    for c in range(last_row_length):
+        column_lengths[c] += 1
 
     return column_lengths
+
+# Creates a list of tuples containing all possible permutations of column positions
+def generate_column_permutations(k):
+    indexes = range(k)
+    # Number of permutations is k!
+    return list(itertools.permutations(indexes, k))
 
 # String is the raw input
 # k is the number of columns
@@ -61,13 +66,13 @@ def test_permutations(string, k, column_lengths, column_positions):
         trigram_freq = english_check.calc_trigram_freq(new_string)
 
         # Get the top trigrams; don't need their frequencies
-        trigrams_only = []
+        top_trigrams = []
         for i in range(10):
-            trigrams_only.append(trigram_freq[i][0])
+            top_trigrams.append(trigram_freq[i][0])
 
         # If "the" and "and" appear in the top trigrams, print the results
-        if "the" in trigrams_only and "and" in trigrams_only:
-            print(str(permutation) + " " + new_string)
+        if "the" in top_trigrams and "and" in top_trigrams:
+            print(str(permutation) + ": " + new_string[:40])
 
 # Launches the specified amount of process with equal workload to break the column transposition cipher
 def start_brute_force(string, k, column_lengths, column_positions, num_procs):
@@ -100,9 +105,12 @@ if __name__ == "__main__":
 
     # k is the number of columns
     # k can be 8, 9, or 10 for this problem
-    k = 9
+    k = 8
     print("k =", k)
 
     column_lengths = calc_col_lens(input_string, k)
     column_positions = generate_column_permutations(k)
     start_brute_force(input_string, k, column_lengths, column_positions, 4)
+
+    # When you know the column transposition that works, run the lines below:
+    # generate_string(string, k, column_lengths, [])
