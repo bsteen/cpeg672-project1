@@ -59,20 +59,21 @@ def generate_string(string, k, column_lengths, new_positions):
 # The process worker function; Goes through its allotment of column position permutations,
 # filters out the best results using various English fitness score methods
 def test_permutations(string, k, column_lengths, column_positions):
+    time.sleep(0.5) # Wait for other processes to start
     for permutation in column_positions:
         new_string = generate_string(string, k, column_lengths, permutation)
 
         # Find the most common trigrams
         trigram_freq = english_check.calc_trigram_freq(new_string)
 
-        # Get the top trigrams; don't need their frequencies
+        # Get the top 5 trigrams; don't need their frequencies
         top_trigrams = []
         for i in range(10):
             top_trigrams.append(trigram_freq[i][0])
 
         # If "the" and "and" appear in the top trigrams, print the results
         if "the" in top_trigrams and "and" in top_trigrams:
-            print(str(permutation) + ": " + new_string[:40])
+            print(str(permutation) + ": " + new_string[:60])
 
 # Launches the specified amount of process with equal workload to break the column transposition cipher
 def start_brute_force(string, k, column_lengths, column_positions, num_procs):
