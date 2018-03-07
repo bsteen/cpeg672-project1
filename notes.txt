@@ -20,8 +20,6 @@ Key size = 8, 9, or 10 columns; k is a permutation of the 8, 9, or 10 columns
 Took 2m56.346s brute force all 3628800 column transpositions using 22 processes
 k = 10
 Column transposition: (6, 8, 2, 4, 1, 7, 3, 5, 9, 0)
-Decoded text: k = 10
-Column transposition: (6, 8, 2, 4, 1, 7, 3, 5, 9, 0)
 Decoded text: itsnothingreturnedmrschickitsmerelychangeofweatherwemustexpectchangenooneisevertoooldtodoafoolishthingunwelcometruthsarenotpopularyetthefirstbringerofunwelcomenewshathbutalosingofficeandhistonguesoundseverafterasasullenbellremembredtollingadepartingfriendwillnotatinyspeckveryclosetoourvisionblotoutthegloryoftheworldandleaveonlyamarginbywhichweseetheblotmostofthetroubleinlifecomesfrommisunderstandingithinksaidannewouldtheworldeverhavebeenmadeifitsmakerhadbeenafraidofmakingtroublemakinglifemeansmakingtroubletobeconsciousthatyouareignorantisagreatsteptoknowledgemadnessingreatonesmustnotunwatchdgo
 
 4.txt:
