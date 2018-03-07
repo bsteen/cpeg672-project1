@@ -35,7 +35,7 @@ def generate_column_permutations(k):
 # String is the raw input
 # k is the number of columns
 # column_lengths is a list containing the length of each column (constant for a given string and k)
-# new_positions is a list containing a single permutation of column positions
+# new_positions is a tuple containing a single permutation of column positions
 # Creates a string by creating a column transposition grid and reversing the cipher
 def generate_string(string, k, column_lengths, new_positions):
     rearranged_columns = [None] * k
@@ -76,8 +76,8 @@ def test_permutations(string, k, column_lengths, column_positions):
         # if "the" in top_trigrams and "and" in top_trigrams:
         #     print(str(permutation) + ": " + new_string[:60])
 
-        # Based on the trigram filtering, the word "thing" seems to appear in the decoded text
-        if new_string.find("nothing") != -1:
+        # Based on the trigram filtering, the phrase "itsnothing" seems to appear in the decoded text
+        if new_string.find("itsnothing") != -1:
                 print(str(permutation) + ": " + new_string[:60])
 
 # Launches the specified amount of process with equal workload to break the column transposition cipher
@@ -113,10 +113,13 @@ if __name__ == "__main__":
     # k can be 8, 9, or 10 for this problem
     k = 10
     print("k =", k)
-
     column_lengths = calc_col_lens(input_string, k)
-    column_positions = generate_column_permutations(k)
-    start_brute_force(input_string, k, column_lengths, column_positions, 4)
 
-    # When you know the column transposition that works, run the lines below:
-    # generate_string(string, k, column_lengths, [])
+    # Run these two commands when trying to find the correct column transposition
+    # column_positions = generate_column_permutations(k)
+    # start_brute_force(input_string, k, column_lengths, column_positions, 4)
+
+    # When you know the column transposition that works, run these lines below:
+    column_position = (6, 8, 2, 4, 1, 7, 3, 5, 9, 0)
+    print("Column transposition:", column_position)
+    print("Decoded text:", generate_string(input_string, k, column_lengths, column_position))

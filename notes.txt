@@ -9,15 +9,20 @@ Decoded text: itisintheuncompromisingnesswithwhichdogmaisheldandnotinthedogmaorw
 Observed Frequency Sums Squared = 0.051173924229035474
 English Frequency Sums Squared = 0.0439782820612771
 has no j's
-Probably playfair since it has no j's and and the observed vs english squared sums are not equal
+Playfair since it has no j's and and the observed vs english squared sums are not equal
 
 3.txt:
 Observed Frequency Sums Squared = 0.06444444444444444
 English Frequency Sums Squared = 0.0643784115158248
 has no j's
-Probably column transposition cipher because the observed vs english frequencies are the same and close to 0.065
-Key size = 8, 9, or 10 columns
-k is a permutation of the 8, 9, or 10 columns
+Column transposition cipher because the observed vs english frequencies are the same and close to 0.065
+Key size = 8, 9, or 10 columns; k is a permutation of the 8, 9, or 10 columns
+Took 2m56.346s brute force all 3628800 column transpositions using 22 processes
+k = 10
+Column transposition: (6, 8, 2, 4, 1, 7, 3, 5, 9, 0)
+Decoded text: k = 10
+Column transposition: (6, 8, 2, 4, 1, 7, 3, 5, 9, 0)
+Decoded text: itsnothingreturnedmrschickitsmerelychangeofweatherwemustexpectchangenooneisevertoooldtodoafoolishthingunwelcometruthsarenotpopularyetthefirstbringerofunwelcomenewshathbutalosingofficeandhistonguesoundseverafterasasullenbellremembredtollingadepartingfriendwillnotatinyspeckveryclosetoourvisionblotoutthegloryoftheworldandleaveonlyamarginbywhichweseetheblotmostofthetroubleinlifecomesfrommisunderstandingithinksaidannewouldtheworldeverhavebeenmadeifitsmakerhadbeenafraidofmakingtroublemakinglifemeansmakingtroubletobeconsciousthatyouareignorantisagreatsteptoknowledgemadnessingreatonesmustnotunwatchdgo
 
 4.txt:
 Observed Frequency Sums Squared = 0.06984356253421704
@@ -40,7 +45,7 @@ Observed Frequency Sums Squared = 0.04494655004859088
 English Frequency Sums Squared = 0.03790484195679802
 Hill 2x2 (by process of elimination)
 http://crypto.interactive-maths.com/hill-cipher.html
-I am stupid and did not understand / forgot how python threads actually worked: https://stackoverflow.com/questions/1697571/python-threading-appears-to-run-threads-sequentially/1697670#1697670
+Forgot how python threads actually worked: https://stackoverflow.com/questions/1697571/python-threading-appears-to-run-threads-sequentially/1697670#1697670
 42m37.884s to brute force all 358800 keys with a single process
 2m23.459s to brute force all 358800 keys with a 24 processes
 Tested key:
