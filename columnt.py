@@ -1,5 +1,6 @@
 import itertools
 import multiprocessing
+import time
 import english_check
 
 # Calculate the total number of rows in the key
@@ -72,8 +73,12 @@ def test_permutations(string, k, column_lengths, column_positions):
             top_trigrams.append(trigram_freq[i][0])
 
         # If "the" and "and" appear in the top trigrams, print the results
-        if "the" in top_trigrams and "and" in top_trigrams:
-            print(str(permutation) + ": " + new_string[:60])
+        # if "the" in top_trigrams and "and" in top_trigrams:
+        #     print(str(permutation) + ": " + new_string[:60])
+
+        # Based on the trigram filtering, the word "thing" seems to appear in the decoded text
+        if new_string.find("nothing") != -1:
+                print(str(permutation) + ": " + new_string[:60])
 
 # Launches the specified amount of process with equal workload to break the column transposition cipher
 def start_brute_force(string, k, column_lengths, column_positions, num_procs):
@@ -106,7 +111,7 @@ if __name__ == "__main__":
 
     # k is the number of columns
     # k can be 8, 9, or 10 for this problem
-    k = 8
+    k = 10
     print("k =", k)
 
     column_lengths = calc_col_lens(input_string, k)
