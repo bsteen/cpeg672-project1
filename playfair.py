@@ -15,13 +15,13 @@ def generate_board(key_string):
 
     return board
 
+# Prints out the board to the terminal
 def print_board(board):
     print("Showing board:")
     for r in board:
         for c in r:
             print(c, end="")
         print()
-    print()
 
 # Returns a dictionary of the row and column of each letter
 def get_letter_indexes(board):
@@ -76,6 +76,8 @@ def swap_letters(l0r, l0c, l1r, l1c, board):
 
 # Tries a random board to decode the text with;
 # If the decoded text is "better" than the previous best, the random changes to the board are kept
+# Repeats this process until a desired error is reached or a maximum amount of combinations
+# is tried
 def shotgun_hill_climb(cipher_text, board):
 
     # Baseline values
@@ -83,17 +85,18 @@ def shotgun_hill_climb(cipher_text, board):
     best_decode = decode_with_board(cipher_text, best_board)
     sqr_eng_freq = english_check.squared_eng_freq(best_decode)
     best_error = abs(sqr_eng_freq - 0.065)
-    count = 0
+    count = 0   # Number of combinations attempted
 
     print("Showing start info...")
     print_board(board)
     print("Starting error rate:", best_error, "\nStarting shotgun hill climb...\n")
 
+    # Stop when desired error is reached or a max number of combinations is tried
     while best_error > 0.001 and count < 1000000:
         coords = []
         decoded_text = ""
 
-        # Get two random coordinates of letters to swap places
+        # Get two random coordinates to swap places
         for n in range(4):
             coords.append(random.randint(0, 4))
 
@@ -115,7 +118,7 @@ def shotgun_hill_climb(cipher_text, board):
             board = swap_letters(coords[0], coords[1], coords[2], coords[3], board)
 
         count += 1
-        if count % 10000 == 0:
+        if count % 100000 == 0:
             print("Number of boards tried:", count)
             print("Best error so far:", best_error, "\n")
 
@@ -131,8 +134,15 @@ if __name__ == "__main__":
         string += line.strip().replace(" ", "")
     cipher_text = string.lower()
 
-    # obs_bigram_freq = english_check.calc_bigram_freq(string)
-    # print("Bigram frequencies:\n", obs_bigram_freq, "\n")
+    obs_bigram_freq = english_check.calc_bigram_freq(string)
+    print("Bigram frequencies:\n", obs_bigram_freq, "\n")
 
     board = generate_board("dtkuesnpfcwgzhrlaimoybqxv")     # Starting board
     shotgun_hill_climb(cipher_text, board)
+
+    # When you know the board key that works, comment out the shotgun_hill_climb call,
+    # uncomment the next lines, and paste the board key into into generate_board argument to decode the text
+    # print_board(board)
+    # decoded = decode_with_board(cipher_text, board)
+    # print("\nDecoded text:", decoded, "\n")
+    # print("English Frequency Sums Squared:", english_check.squared_eng_freq(decoded))

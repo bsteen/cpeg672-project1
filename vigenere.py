@@ -5,7 +5,7 @@ import english_check
 def shift_letter(c, n):
     return chr(((ord(c) + n - ord('a')) % 26) + ord('a'))
 
-# Given a string , shift every character by shift_amount
+# Given a string, shift every character by shift_amount
 def shift_every_letter(string, shift_amount):
     shifted_string = ""
     for letter in string:
@@ -41,7 +41,7 @@ def find_potential_shifts(string, key_len):
 
 # Given a list containing lists of possible shift combinations, returns a list of all permutations
 def find_key_permutations(potential_shifts):
-    # Check to see have man permutations will be generated
+    # Check to see how many permutations will be generated
     total_combo_check = 1
     for letters in potential_shifts:
         total_combo_check *= len(letters)
@@ -62,7 +62,7 @@ def find_key_permutations(potential_shifts):
     print(len(list_of_lists), "possible key(s) found!")
     return list_of_lists
 
-# Given a list of keys, try to solve the Vigener cipher with each key
+# Given a list of keys, try to solve the Vigenere cipher with each key
 # Note: the decode key must be the opposite of what was used to encode the message:
 # E.g: Key to encode: 18,10,11,8,26,12,9,9,12,6 => key to decode: 9,17,16,19,1,15,18,18,15,21 (what this function uses)
 def solve_with_keys(string, keys):
@@ -90,14 +90,14 @@ if __name__ == "__main__":
         string += line.strip().replace(" ", "")
 
     # Search for valid keys in this range of sizes (narrow down by process of elimination)
-    for k in range(16, 17):
-        key_len = k
-        print("Key length selected:", key_len)
+    # for k in range(16, 17):
+    #     key_len = k
+    #     print("Key length selected:", key_len)
 
-        potential_shifts = find_potential_shifts(string, key_len)
-        keys = find_key_permutations(potential_shifts)
+    #     potential_shifts = find_potential_shifts(string, key_len)
+    #     keys = find_key_permutations(potential_shifts)
 
-        solve_with_keys(string, keys)
+    #     solve_with_keys(string, keys)
 
     # When you have found the key you know you want to use, comment out the
     # for-loop about and use the two lines below
