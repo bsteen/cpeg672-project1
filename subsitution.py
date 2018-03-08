@@ -38,7 +38,7 @@ if __name__ == "__main__":
     print("Duplicate letter frequencies:\n", obs_dup_letter_freq, "\n")
 
     # Used the above functions to guess what t, h, and e mapped to. Looked at the results and tried to create words from theses base letters
-    # I used trial and error to iteratively see what letters were correct
+    # I used trial and error to iteratively see what letters were correct; For instance, I saw "th-t" and knew the missing letter was probably an "a"
     # There are no k's or w's in the cipher text and there are no k's or q's in the decoded test, so k = k or q and w = k or q
     # substitute(string, ['-','-','-','e','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','h','t'])
     # substitute(string, ['-','-','-','e','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','a','-','-','-','-','h','t'])
