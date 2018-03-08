@@ -42,14 +42,15 @@ def calc_trigram_freq(string):
 
     return sort_dictionary(obs_freq)[:20]
 
-# Out of all 2 letter pairs, count number of repeated letters
+# Out of all 2 letter pairs, count pairs of duplicate letters (aa, bb, cc ...)
+# Returns results as a list of the top results, from high to low frequency
 def duplicate_letter_count(string):
     obs_freq = {}
     letter_pairs = len(string) - 1
 
     for i in range(26):
         letter = chr(i + ord('a'))
-        obs_freq[letter] = string.count(letter+letter)
+        obs_freq[letter] = string.count(letter + letter)
 
     return sort_dictionary(obs_freq)
 
@@ -74,7 +75,7 @@ def squared_eng_freq(string):
     return sum_f_squared
 
 # Search a string for common words
-# Returns the amount of words it found, along with the words it looked for
+# Returns a tuple of the amount of words it found with the number of words it looked for
 def found_common_word(string):
     common_words = ["the", "and", "that", "have", "for", "not", "with", "this"]
     found = 0

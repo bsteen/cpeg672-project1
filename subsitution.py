@@ -15,7 +15,7 @@ def substitute(string, substitutions):
     new_string = list(string)
     for i in range(len(string)):
         new_string[i] = substitutions[ctn(new_string[i])]
-    print("Decoded text:", "".join(new_string), "\n")
+    print("Decoded text:", "".join(new_string))
 
 if __name__ == "__main__":
     string = ""
@@ -38,7 +38,8 @@ if __name__ == "__main__":
     print("Duplicate letter frequencies:\n", obs_dup_letter_freq, "\n")
 
     # Used the above functions to guess what t, h, and e mapped to. Looked at the results and tried to create words from theses base letters
-    # Trial and error to see what letters were good
+    # I used trial and error to iteratively see what letters were correct
+    # There are no k's or w's in the cipher text and there are no k's or q's in the decoded test, so k = k or q and w = k or q
     # substitute(string, ['-','-','-','e','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','h','t'])
     # substitute(string, ['-','-','-','e','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','a','-','-','-','-','h','t'])
     # substitute(string, ['r','-','-','e','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','a','-','-','-','-','h','t'])
@@ -62,4 +63,3 @@ if __name__ == "__main__":
     # substitute(string, ['r','p','o','e','f','s','d','m','b','l','-','w','c','g','v','u','i','j','y','a','-','n','-','x','h','t'])
     substitute(string, ['r','p','o','e','f','s','d','m','b','l','k','w','c','g','v','u','i','j','y','a','z','n','q','x','h','t'])
     #                  ['a','b','c','d','e','f','g','h','i','j', k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
-    # There are no k's or w's in the cipher text and there are no k's or q's in the decoded test, so k=k,q and w=k,q

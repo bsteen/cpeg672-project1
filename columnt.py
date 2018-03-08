@@ -9,13 +9,12 @@ def calc_num_rows(string, k):
     return -(-len(string) // k)
 
 # Calculates the length of each column
-# Returns lengths as list
+# Returns lengths as a list
 def calc_col_lens(string, k):
     # All columns will be at least this long
     column_lengths = [calc_num_rows(string, k) - 1] * k
 
-    # Determine how many characters are in the last row
-    # (Does a column have a letter in the last row?)
+    # Determine how many characters are in the last row (does a column have a letter in the last row?)
     last_row_length = len(string) % k
     if last_row_length == 0:
         last_row_length = k
@@ -32,10 +31,10 @@ def generate_column_permutations(k):
     # Number of permutations is k!
     return list(itertools.permutations(indexes, k))
 
-# String is the raw input
+# String is the raw input text
 # k is the number of columns
 # column_lengths is a list containing the length of each column (constant for a given string and k)
-# new_positions is a tuple containing a single permutation of column positions
+# new_positions is a tuple containing a single permutation of the possible column positions
 # Creates a string by creating a column transposition grid and reversing the cipher
 def generate_string(string, k, column_lengths, new_positions):
     rearranged_columns = [None] * k
@@ -45,10 +44,10 @@ def generate_string(string, k, column_lengths, new_positions):
     for i in range(k):
         column_pos = new_positions[i]
         length = column_lengths[column_pos]
-        rearranged_columns[column_pos] = string[start: start + length]
+        rearranged_columns[column_pos] = string[start: start + length]  # Using the precalculated column lengths, this makes sure each column has the correct amount of letters
         start += length
 
-    # Using the new permutation, generate the string
+    # Using the columns, generate the string
     output_string = ""
     for i in range(len(rearranged_columns[0])):     # First column will always have the max amount of rows
         for col in rearranged_columns:              # Go through each column and append the ith character
@@ -76,11 +75,11 @@ def test_permutations(string, k, column_lengths, column_positions):
         # if "the" in top_trigrams and "and" in top_trigrams:
         #     print(str(permutation) + ": " + new_string[:60])
 
-        # Based on the trigram filtering, the phrase "itsnothing" seems to appear in the decoded text
+        # Based on the trigram filtering I used above, the phrase "itsnothing" seems to appear in the decoded text
         if new_string.find("itsnothing") != -1:
-                print(str(permutation) + ": " + new_string[:60])
+            print(str(permutation) + ": " + new_string[:60])
 
-# Launches the specified amount of process with equal workload to break the column transposition cipher
+# Launches the specified amount of process with equal workload to brute force the column transposition cipher
 def start_brute_force(string, k, column_lengths, column_positions, num_procs):
     processes = []
     num_permutations = len(column_positions)

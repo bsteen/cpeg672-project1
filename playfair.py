@@ -78,7 +78,7 @@ def swap_letters(l0r, l0c, l1r, l1c, board):
 # If the decoded text is "better" than the previous best, the random changes to the board are kept
 # Repeats this process until a desired error is reached or a maximum amount of combinations
 # is tried
-def shotgun_hill_climb(cipher_text, board):
+def shotgun_hill_climb(cipher_text, board, max_combo):
 
     # Baseline values
     best_board = board
@@ -89,10 +89,10 @@ def shotgun_hill_climb(cipher_text, board):
 
     print("Showing start info...")
     print_board(board)
-    print("Starting error rate:", best_error, "\nStarting shotgun hill climb...\n")
+    print("Starting error rate:", best_error, "\nRunning shotgun hill climb...\n")
 
     # Stop when desired error is reached or a max number of combinations is tried
-    while best_error > 0.001 and count < 1000000:
+    while best_error > 0.001 and count < max_combo:
         coords = []
         decoded_text = ""
 
@@ -120,7 +120,6 @@ def shotgun_hill_climb(cipher_text, board):
         count += 1
         if count % 100000 == 0:
             print("Number of boards tried:", count)
-            print("Best error so far:", best_error, "\n")
 
     print("Number of boards tried:", count)
     print_board(best_board)
@@ -138,7 +137,7 @@ if __name__ == "__main__":
     print("Bigram frequencies:\n", obs_bigram_freq, "\n")
 
     board = generate_board("dtkuesnpfcwgzhrlaimoybqxv")     # Starting board
-    shotgun_hill_climb(cipher_text, board)
+    shotgun_hill_climb(cipher_text, board, 1000000)
 
     # When you know the board key that works, comment out the shotgun_hill_climb call,
     # uncomment the next lines, and paste the board key into into generate_board argument to decode the text
